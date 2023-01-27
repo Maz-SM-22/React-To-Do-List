@@ -5,7 +5,7 @@ const { BadRequest, NotFoundError } = require('../utils/error');
 const getTasks = async (req, res, next) => {
     try {
         const userObj = await User.findById(req.user._id).populate('tasks');
-        res.render('tasks', { tasks: userObj.tasks, user: req.user });
+        res.json({ user: req.user, tasks: userObj.tasks });
     } catch (error) {
         next(error);
     }
@@ -46,7 +46,7 @@ const getTaskById = async (req, res, next) => {
         if (!task) {
             throw new NotFoundError(`Unable to display task with id ${req.params.id}`);
         } else {
-            res.render('singleView', { task: task });
+            res.json({ task: task });
         }
     } catch (error) {
         next(error);
@@ -75,7 +75,7 @@ const deleteTask = async (req, res, next) => {
         if (!task) {
             throw new NotFoundError(`Unable to delete task with id ${req.params.id}`);
         } else {
-            res.render('taskDeleted', { task: task });    // If you wanna use this you have to create an endpoint. Fetch won't work with render
+            res.json({ task: task });    // If you wanna use this you have to create an endpoint. Fetch won't work with render
         }
     } catch (error) {
         next(error);

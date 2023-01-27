@@ -9,30 +9,14 @@ const renderTaskForm = async (req, res, next) => {
             if (!task) {
                 throw new NotFoundError(`No task found with id ${taskId}`);
             } else {
-                res.render('taskForm', { task: task });
+                res.json({ task: task });
             }
         } else {
-            res.render('taskForm', { task: null });
+            res.json({ task: null });
         }
     } catch (error) {
         next(error);
     }
 }
 
-const renderLoginForm = (req, res, next) => {
-    try {
-        res.render('loginForm');
-    } catch (error) {
-        next(error);
-    }
-}
-
-const renderRegisterForm = (req, res, next) => {
-    try {
-        res.render('registerForm');
-    } catch (error) {
-        next(error);
-    }
-}
-
-module.exports = { renderTaskForm, renderLoginForm, renderRegisterForm };
+module.exports = { renderTaskForm };
