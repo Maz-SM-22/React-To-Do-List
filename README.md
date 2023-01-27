@@ -1,2 +1,2 @@
 # React-To-Do-List
-To-do list application made with React 
+To-do list application made with React and TypeScript
