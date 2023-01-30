@@ -16,6 +16,7 @@ export const LoginForm = () => {
                     'password': password
                 })
             })
+            // Not sure if this is necessary cos login is not returning a JSON
             const data = await response.json();
             if (response.ok) {
                 console.log(data);

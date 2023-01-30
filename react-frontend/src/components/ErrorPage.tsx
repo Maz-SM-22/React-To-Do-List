@@ -4,7 +4,7 @@ type ErrorProps = {
     error: Error
 }
 
-export const Error = ({ error }: ErrorProps) => {
+export const ErrorPage = ({ error }: ErrorProps) => {
     return (
         <div className='container'>
             <h1>Uhoh!</h1>

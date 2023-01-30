@@ -11,6 +11,7 @@ export const TaskForm = ({ task }: taskFormProps) => {
     const [method, setMethod] = useState<'POST' | 'PUT'>('POST');
     const [url, setUrl] = useState<string>('/tasks');
 
+    // Task form currently not working if there is a task 
     if (task) {
         settaskId(task.id);
         setMethod('PUT');

@@ -43,17 +43,6 @@ app.use(errorHandler);
 
 dbConnect();
 
-app.get('/', (req, res) => {
-    req.flash('info', 'Welcome!')
-    res.render('home', { message: req.flash('info') });
-})
-
-app.get('/view/error', (req, res) => {
-    res.writeHead(404, { "Content-type": "text/html" });
-    res.render('error');
-});
-
-
 app.listen({ path: HOSTNAME, port: PORT }, (error) => {
     if (error) return console.log(error);
     console.log(`Server is running on port ${PORT}...`);

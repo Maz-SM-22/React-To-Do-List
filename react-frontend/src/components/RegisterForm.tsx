@@ -18,6 +18,7 @@ export const RegisterForm = () => {
                     'password': password
                 })
             });
+            // Again, not sure if we need this because we are redirecting and not returning a JSON from this function
             const data = await response.json();
             if (response.ok) {
                 console.log(data);

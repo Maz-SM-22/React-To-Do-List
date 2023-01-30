@@ -1,18 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Task } from '../types/TaskType';
 import { User } from '../types/UserType';
 
 type TasksProps = {
-    user: User,
-    tasks: Array<Task>
+    user: User
 }
 
-export const Tasks = ({ user, tasks }: TasksProps) => {
+export const Tasks = ({ user }: TasksProps) => {
+    const [tasks, setTasks] = useState<Array<Task> | []>([]);
+    const [pendingTasks, setPendingTasks] = useState<Array<Task> | []>([]);
+    const [completedTasks, setCompletedTasks] = useState<Array<Task> | []>([]);
+
     const getPendingTasks = () => { return tasks.filter(task => !task.completed) };
     const getCompletedTasks = () => { return tasks.filter(task => task.completed) };
 
-    const [pendingTasks, setPendingTasks] = useState(getPendingTasks());
-    const [completedTasks, setCompletedTasks] = useState(getCompletedTasks());
+    // Needs to decide which method to use to display tasks 
+    useEffect(() => { setTasks(user.tasks) })
+
+    // useEffect(() => {
+    //     const getTasks = async () => {
+    //         const response = await fetch('/tasks');
+    //         const data = await response.json()
+    //         try {
+    //             if (response.ok) {
+    //                 setTasks(data.tasks);
+    //                 setPendingTasks(getPendingTasks());
+    //                 setCompletedTasks(getCompletedTasks());
+    //             } else {
+    //                 console.error(data);
+    //             }
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     }
+    // }, [])
 
     return (
         <div>
@@ -31,7 +52,7 @@ export const Tasks = ({ user, tasks }: TasksProps) => {
                         <>
                             {
                                 pendingTasks.map((task: Task) =>
-                                    <div className="task" data-status={task.completed} data-id={task._id}>
+                                    <div className="task" data-status={task.completed} data-id={task.id}>
                                         <p className="task-title">{task.title}</p>
                                         <p className="task-description">{task.description}</p>
                                         <p className="task-due-date">{String(task.dueDate).split(' ').slice(0, 4).join(' ')}</p>
@@ -50,7 +71,7 @@ export const Tasks = ({ user, tasks }: TasksProps) => {
                         <>
                             {
                                 completedTasks.map((task: Task) =>
-                                    <div className="task" data-status={task.completed} data-id={task._id}>
+                                    <div className="task" data-status={task.completed} data-id={task.id}>
                                         <p className="task-title">{task.title}</p>
                                         <p className="task-description">{task.description}</p>
                                         <p className="task-due-date">{String(task.dueDate).split(' ').slice(0, 4).join(' ')}</p>
