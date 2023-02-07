@@ -3,7 +3,6 @@ const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const methodOverride = require('method-override');
 const session = require('express-session');
-const flash = require('connect-flash');
 const cors = require('cors');
 require('dotenv').config({ path: './config/config.env' });
 const dbConnect = require('./config/db');
@@ -19,7 +18,6 @@ const app = express();
 app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(cors());
-app.use(flash());
 
 app.use(session({
     secret: 'shhhhhh',
@@ -39,7 +37,7 @@ app.use('/tasks', taskRouter);
 app.use('/user', userRouter);
 app.use('/', formRouter);
 
-app.use(errorHandler);
+// app.use(errorHandler);
 
 dbConnect();
 

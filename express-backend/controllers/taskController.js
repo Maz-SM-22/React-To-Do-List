@@ -4,7 +4,7 @@ const { BadRequest, NotFoundError } = require('../utils/error');
 
 const getTasks = async (req, res, next) => {
     try {
-        const userObj = await User.findById(req.user._id).populate('tasks');
+        const userObj = await User.findById(req.params.userId).populate('tasks');
         res.json({ user: req.user, tasks: userObj.tasks });
     } catch (error) {
         next(error);

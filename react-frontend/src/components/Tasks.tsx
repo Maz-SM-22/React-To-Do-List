@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom';
 import { Task } from '../types/TaskType';
-import { User } from '../types/UserType';
+import { UseAuthentication } from './AuthorizationContext';
 
-type TasksProps = {
-    user: User
-}
+export const Tasks = () => {
+    const authentication = UseAuthentication();
+    const onLogout = authentication?.onLogout;
+    const userData = authentication?.authData;
 
-export const Tasks = ({ user }: TasksProps) => {
     const [tasks, setTasks] = useState<Array<Task> | []>([]);
     const [pendingTasks, setPendingTasks] = useState<Array<Task> | []>([]);
     const [completedTasks, setCompletedTasks] = useState<Array<Task> | []>([]);
@@ -14,38 +15,54 @@ export const Tasks = ({ user }: TasksProps) => {
     const getPendingTasks = () => { return tasks.filter(task => !task.completed) };
     const getCompletedTasks = () => { return tasks.filter(task => task.completed) };
 
-    // Needs to decide which method to use to display tasks 
-    useEffect(() => { setTasks(user.tasks) })
+    useEffect(() => {
+        const getTasks = async () => {
+            const response = await fetch('/tasks/${userData.id}');
+            const data = await response.json()
+            try {
+                if (response.ok) {
+                    setTasks(data.tasks);
+                    setPendingTasks(getPendingTasks());
+                    setCompletedTasks(getCompletedTasks());
+                } else {
+                    console.error(data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getTasks();
+    }, [])
 
-    // useEffect(() => {
-    //     const getTasks = async () => {
-    //         const response = await fetch('/tasks');
-    //         const data = await response.json()
-    //         try {
-    //             if (response.ok) {
-    //                 setTasks(data.tasks);
-    //                 setPendingTasks(getPendingTasks());
-    //                 setCompletedTasks(getCompletedTasks());
-    //             } else {
-    //                 console.error(data);
-    //             }
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     }
-    // }, [])
+    const logout = async () => {
+        try {
+            const response = await fetch('/user/logout', {
+                method: 'GET',
+                headers: { "Content-Type": "application/json" },
+                credentials: 'include'
+            })
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            } else {
+                if (onLogout) onLogout();
+                return <Navigate to='/' />
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <div>
             <nav>
                 <ul>
-                    <li>Hi, {user.username}</li>
-                    <li><a href="/user/logout" className="button">Logout</a></li>
+                    <li>Hi, {userData.username}</li>
+                    <li><a className="button" onClick={logout}>Logout</a></li>
                 </ul>
             </nav>
             <div className="container">
                 <h2>To-Do List</h2>
-                <a href="/task/create" className="button">Add New Task</a>
+                <a href="/tasks/create" className="button">Add New Task</a>
                 <h2>Pending Tasks</h2>
                 <div className="tasks-container">
                     {(pendingTasks) ? (

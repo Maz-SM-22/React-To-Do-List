@@ -18,7 +18,13 @@ const registerUser = async (req, res, next) => {
                     .then(user => {
                         req.login(user, (err) => {
                             if (err) return next(err);
-                            res.redirect('/tasks');
+                            res.send({
+                                status: 200,
+                                message: 'Login successful',
+                                id: user.id,
+                                username: user.username,
+                                email: user.email
+                            });
                         })
                     }).catch(error => next(error));
             }
@@ -35,7 +41,13 @@ const loginUser = async (req, res, next) => {
             successRedirect: '/tasks',
             failureRedirect: '/',
             failureFlash: true
-        })(req, res, next);
+        }), (req, res, next) => {
+            res.send({
+                id: req.user.id,
+                username: req.user.username,
+                email: req.user.email
+            })
+        };
     } catch (error) {
         next(error);
     }
@@ -50,11 +62,26 @@ const logoutUser = (req, res, next) => {
         res.clearCookie('connect.sid', { path: '/' });
         req.session.destroy(error => {
             if (error) return next(error);
-            res.redirect('/');
+            res.send({
+                status: 200,
+                message: 'Logout successful'
+            });
         })
     } catch (error) {
         next(error);
     }
 }
 
-module.exports = { registerUser, loginUser, logoutUser }; 
+const getLoggedInUser = (req, res, next) => {
+    try {
+        res.send({
+            id: req.user.id,
+            username: req.user.username,
+            email: req.user.email
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
+module.exports = { registerUser, loginUser, logoutUser, getLoggedInUser }; 

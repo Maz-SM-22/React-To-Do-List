@@ -1,6 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { UseAuthentication } from './AuthorizationContext';
 
 export const RegisterForm = () => {
+    const navigate = useNavigate();
+    const authentication = UseAuthentication();
+    const onLogin = authentication?.onLogin;
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -9,7 +14,7 @@ export const RegisterForm = () => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/user/register', {
+            const response = await fetch('/user/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -18,12 +23,16 @@ export const RegisterForm = () => {
                     'password': password
                 })
             });
-            // Again, not sure if we need this because we are redirecting and not returning a JSON from this function
             const data = await response.json();
-            if (response.ok) {
-                console.log(data);
+            if (!response.ok) {
+                throw new Error(response.statusText);
             } else {
-                console.error(data);
+                if (onLogin) onLogin({
+                    id: data.id,
+                    username: data.username,
+                    email: data.email
+                })
+                navigate('/tasks', { replace: true });
             }
         } catch {
             setError(error);
@@ -34,42 +43,36 @@ export const RegisterForm = () => {
     return (
         <div className="container">
             <h2>To-Do List</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-item">
-                    <label htmlFor="username">Username:</label>
-                </div>
+            <form>
                 <div className="form-item">
                     <input
                         type="text"
                         name="username"
+                        placeholder='username'
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
                 <div className="form-item">
-                    <label htmlFor="email">Email:</label>
-                </div >
-                <div className="form-item">
                     <input
                         type="email"
                         name="email"
+                        placeholder='email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
                 <div className="form-item">
-                    <label htmlFor="password">Password:</label>
-                </div >
-                <div className="form-item">
                     <input
                         type="password"
                         name="password"
+                        placeholder='password'
                         autoComplete="new-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <button type="submit">Register</button>
+                <button type="submit" onClick={handleSubmit}>Register</button>
             </form >
         </div >
     )

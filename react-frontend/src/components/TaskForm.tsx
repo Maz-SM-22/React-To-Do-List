@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { Task } from '../types/TaskType';
 import { Types } from 'mongoose';
+import { UseAuthentication } from './AuthorizationContext';
 
 type taskFormProps = {
-    task: Task | null
+    task: Task | undefined
 }
 
 export const TaskForm = ({ task }: taskFormProps) => {
-    const [taskId, settaskId] = useState<Types.ObjectId | null>(null);
+    const authentication = UseAuthentication();
+    const userData = authentication?.authData;
+    const [taskId, settaskId] = useState<Types.ObjectId | undefined>(undefined);
     const [method, setMethod] = useState<'POST' | 'PUT'>('POST');
     const [url, setUrl] = useState<string>('/tasks');
 
@@ -49,7 +52,7 @@ export const TaskForm = ({ task }: taskFormProps) => {
                         <input type="date" name="dueDate" value={task ? task.dueDate : ''} />
 
                     </div>
-                    <button type="submit">{task ? 'Add' : 'Update'} Task</button>
+                    <button type="submit">{task ? 'Update' : 'Add'} Task</button>
                 </form>
             </div>
         </div >
