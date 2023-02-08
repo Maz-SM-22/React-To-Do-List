@@ -2644,7 +2644,7 @@
     "@types/babel__template" "*"
     "@types/babel__traverse" "*"
 
-"@types/babel__generator@*":
+"@types/babel__generator@*", "@types/babel__generator@^7.6.4":
   "integrity" "sha512-tFkciB9j2K755yrTALxD44McOrk+gfpIpvC3sxHjRawj6PfnQxrse4Clq5y/Rq+G3mrBurMax/lG8Qn2t9mSsg=="
   "resolved" "https://registry.npmjs.org/@types/babel__generator/-/babel__generator-7.6.4.tgz"
   "version" "7.6.4"
@@ -2665,6 +2665,18 @@
   "version" "7.18.3"
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/babel-generator@^6.25.5":
+  "integrity" "sha512-lhbwMlAy5rfWG+R6l8aPtJdEFX/kcv6LMFIuvUb0i89ehqgD24je9YcB+0fRspQhgJGlEsUImxpw4pQeKS/+8Q=="
+  "resolved" "https://registry.npmjs.org/@types/babel-generator/-/babel-generator-6.25.5.tgz"
+  "version" "6.25.5"
+  dependencies:
+    "@types/babel-types" "*"
+
+"@types/babel-types@*":
+  "integrity" "sha512-pkPtJUUY+Vwv6B1inAz55rQvivClHJxc9aVEPPmaq2cbyeMLCiDpbKpcKyX4LAwpNGi+SHBv0tHv6+0gXv0P2A=="
+  "resolved" "https://registry.npmjs.org/@types/babel-types/-/babel-types-7.0.11.tgz"
+  "version" "7.0.11"
 
 "@types/body-parser@*":
   "integrity" "sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g=="

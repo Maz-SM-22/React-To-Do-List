@@ -23,7 +23,7 @@ export const AuthorizationContext = ({ children }: contextChildren) => {
     useEffect(() => {
         const getLoggedUser = async () => {
             try {
-                const response = await fetch('/userdata', {
+                const response = await fetch('/user/data', {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json'

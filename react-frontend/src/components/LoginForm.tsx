@@ -21,11 +21,10 @@ export const LoginForm = () => {
                     'password': password
                 })
             })
-            // Not sure if this is necessary cos login is not returning a JSON
-            const data = await response.json();
             if (!response.ok) {
                 throw new Error(response.statusText);
             } else {
+                const data = await response.json();
                 if (onLogin) onLogin({
                     id: data.id,
                     username: data.username,
@@ -37,13 +36,12 @@ export const LoginForm = () => {
             setError(error);
             console.error(error);
         }
-
     }
 
     return (
         <div className="container">
             <h2>To-Do List</h2>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div className="form-item">
                     <input
                         type="email"
@@ -64,7 +62,7 @@ export const LoginForm = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" onClick={handleSubmit}>Login</button>
             </form>
         </div>
     )

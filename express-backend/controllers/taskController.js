@@ -30,7 +30,10 @@ const createTask = async (req, res, next) => {
                     user.tasks.push(task._id);
                     user.save((err) => {
                         if (err) return next(err);
-                        res.redirect('/tasks');
+                        res.status(200).send({
+                            status: 200,
+                            message: 'Task saved sucessfully'
+                        })
                     })
                 }
             })

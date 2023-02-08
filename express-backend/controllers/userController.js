@@ -37,17 +37,21 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
     try {
-        passport.authenticate('local', {
-            successRedirect: '/tasks',
-            failureRedirect: '/',
-            failureFlash: true
-        }), (req, res, next) => {
-            res.send({
-                id: req.user.id,
-                username: req.user.username,
-                email: req.user.email
-            })
-        };
+        passport.authenticate('local', (err, user, info) => {
+            if (err || !user) {
+                if (info) throw new BadRequest(info.message);
+                else next(err);
+            } else {
+                req.login(user, (error) => {
+                    if (error) return next(error);
+                    res.status(200).send({
+                        id: user.id,
+                        username: user.username,
+                        email: user.email
+                    })
+                })
+            }
+        })(req, res, next);
     } catch (error) {
         next(error);
     }
@@ -57,16 +61,15 @@ const logoutUser = (req, res, next) => {
     try {
         req.logout(error => {
             if (error) return next(error);
-            res.redirect('/');
+            res.clearCookie('connect.sid', { path: '/' });
+            req.session.destroy(error => {
+                if (error) return next(error);
+                res.status(200).send({
+                    status: 200,
+                    message: 'Logout successful'
+                });
+            })
         });
-        res.clearCookie('connect.sid', { path: '/' });
-        req.session.destroy(error => {
-            if (error) return next(error);
-            res.send({
-                status: 200,
-                message: 'Logout successful'
-            });
-        })
     } catch (error) {
         next(error);
     }

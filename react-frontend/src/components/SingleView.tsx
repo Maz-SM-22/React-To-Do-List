@@ -1,14 +1,32 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Task } from '../types/TaskType';
 import { UseAuthentication } from './AuthorizationContext';
 
-type TaskProps = {
-    task: Task | undefined
-}
-
-export const SingleView = ({ task }: TaskProps) => {
+export const SingleView = () => {
     const authentication = UseAuthentication();
     const userData = authentication?.authData;
+
+    const [task, setTask] = useState<any>({});
+    const { id } = useParams();
+
+    useEffect(() => {
+        const getTaskInfo = async () => {
+            try {
+                const response = await fetch(`/tasks/${id}`);
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                } else {
+                    const data = response.json();
+                    setTask(data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getTaskInfo();
+    }, []);
+
     return (
         <div>
             {task && (

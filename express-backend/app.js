@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 app.use(methodOverride('_method'));
-app.use(cors());
+app.use(cors({ origin: 'localhost:3000', credentials: true }));
 
 app.use(session({
     secret: 'shhhhhh',
@@ -37,7 +37,7 @@ app.use('/tasks', taskRouter);
 app.use('/user', userRouter);
 app.use('/', formRouter);
 
-// app.use(errorHandler);
+app.use(errorHandler);
 
 dbConnect();
 

@@ -1,9 +1,9 @@
 import { Types } from 'mongoose';
 
 export type Task = {
-    id: Types.ObjectId,
-    title: string,
-    description: string,
-    completed: boolean,
-    dueDate: any
+    id: Types.ObjectId | undefined,
+    title: string | undefined,
+    description: string | undefined,
+    completed: boolean | undefined,
+    dueDate: any | undefined
 }
