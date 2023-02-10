@@ -32,10 +32,12 @@ export const Tasks = () => {
         }
         getTasks();
 
+        console.log(tasks);
+
         const getPendingTasks = () => tasks.filter(task => !task.completed);
         const getCompletedTasks = () => tasks.filter(task => task.completed);
 
-    }, [tasks, pendingTasks, completedTasks, userData.id])
+    }, [setTasks, userData.id]);
 
     const goToTaskView = (id: any) => navigate(`/tasks/${id}`);
 
@@ -76,10 +78,10 @@ export const Tasks = () => {
                                 pendingTasks.map((task: Task) =>
                                     <div
                                         className="task"
-                                        key={String(task.id)}
+                                        key={String(task._id)}
                                         data-status={task.completed}
-                                        data-id={task.id}
-                                        onClick={() => goToTaskView(task.id)}
+                                        data-id={task._id}
+                                        onClick={() => goToTaskView(task._id)}
                                     >
                                         <p className="task-title">{task.title}</p>
                                         <p className="task-description">{task.description}</p>
@@ -101,10 +103,10 @@ export const Tasks = () => {
                                 completedTasks.map((task: Task) =>
                                     <div
                                         className="task"
-                                        key={String(task.id)}
+                                        key={String(task._id)}
                                         data-status={task.completed}
-                                        data-id={task.id}
-                                        onClick={() => goToTaskView(task.id)}
+                                        data-id={task._id}
+                                        onClick={() => goToTaskView(task._id)}
                                     >
                                         <p className="task-title">{task.title}</p>
                                         <p className="task-description">{task.description}</p>

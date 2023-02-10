@@ -9,7 +9,7 @@ type taskFormProps = {
 export const TaskForm = ({ task }: taskFormProps) => {
     const navigate = useNavigate();
     let taskInfo: Task = {
-        id: undefined,
+        _id: undefined,
         title: undefined,
         description: undefined,
         completed: undefined,
@@ -21,7 +21,7 @@ export const TaskForm = ({ task }: taskFormProps) => {
     useEffect(() => {
         if (task) {
             taskInfo = task;
-            setUrl(`/tasks/${taskInfo.id}`);
+            setUrl(`/tasks/${taskInfo._id}`);
             setMethod('PUT');
         }
     }, [task])

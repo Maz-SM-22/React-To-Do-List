@@ -61,15 +61,15 @@ const logoutUser = (req, res, next) => {
     try {
         req.logout(error => {
             if (error) return next(error);
-            res.clearCookie('connect.sid', { path: '/' });
-            req.session.destroy(error => {
-                if (error) return next(error);
-                res.status(200).send({
-                    status: 200,
-                    message: 'Logout successful'
-                });
-            })
         });
+        res.clearCookie('connect.sid', { path: '/' });
+        req.session.destroy(error => {
+            if (error) return next(error);
+            res.status(200).send({
+                status: 200,
+                message: 'Logout successful'
+            });
+        })
     } catch (error) {
         next(error);
     }

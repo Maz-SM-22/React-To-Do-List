@@ -25,7 +25,7 @@ export const SingleView = () => {
             }
         }
         getTaskInfo();
-    }, []);
+    }, [setTask]);
 
     return (
         <div>
